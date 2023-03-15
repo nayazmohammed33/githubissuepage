@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useEffect, useState} from "react";
+import { Octokit } from "https://cdn.skypack.dev/octokit";
+import Issues from "./Issues";
+import Pagination from "./Pagination";
+import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+
+
+  const fetcher = async () => {
+    const octokit = new Octokit({
+      auth: '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'    })
+    let response = await octokit.request('GET /repos/reactjs/reactjs.org/issues', {
+      owner: 'reactjs',
+      repo: 'reactjs.org',
+    })
+    console.log(response.data)
+    setPosts(response.data);
+    setLoading(false);
+  }
+  useEffect(() => {
+    fetcher()
+  }, [])
+
+
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+
+
+  return (
+    <div className='container mt-5'>
+   
+    <Issues posts={currentPosts} loading={loading} />
+    <Pagination
+      postsPerPage={postsPerPage}
+      totalPosts={posts.length}
+      paginate={paginate}
+    />
+  </div>
+     )
+}
+export default App
