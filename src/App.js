@@ -14,7 +14,7 @@ function App() {
 
   const fetcher = async () => {
     const octokit = new Octokit({
-      auth: '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'    })
+      auth: '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'    })
     let response = await octokit.request('GET /repos/reactjs/reactjs.org/issues', {
       owner: 'reactjs',
       repo: 'reactjs.org',
