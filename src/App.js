@@ -1,5 +1,6 @@
 import { useEffect, useState} from "react";
 import { Octokit } from "https://cdn.skypack.dev/octokit";
+
 import Issues from "./Issues";
 import Pagination from "./Pagination";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,7 +14,7 @@ function App() {
 
   const fetcher = async () => {
     const octokit = new Octokit({
-      auth: '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'    })
+      auth: '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'    })
     let response = await octokit.request('GET /repos/reactjs/reactjs.org/issues', {
       owner: 'reactjs',
       repo: 'reactjs.org',

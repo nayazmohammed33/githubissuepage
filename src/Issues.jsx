@@ -11,7 +11,7 @@ const styles = {
 };
 
     const handleClick = () => {
-        window.location.replace('https://bobbyhadz.com');
+        window.open('https://bobbyhadz.com','_blank');
       };
  
 
